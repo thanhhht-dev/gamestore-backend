@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",                         // Target latest stable JS
+    "module": "NodeNext",                       // Required for Node.js
+    "strict": true,                             // Enable all strict type checks
+    "moduleResolution": "NodeNext",             // Use Node.js module resolution
+    "esModuleInterop": true,                    // Allow default imports from CommonJS
+    "skipLibCheck": true,                       // Skip type checks of dependencies
+    "forceConsistentCasingInFileNames": true,   // Prevent filename case issues
+    "experimentalDecorators": true,             // Required for TypeORM
+    "emitDecoratorMetadata": true,              // Required for TypeORM
+    "resolveJsonModule": true,                  // Allow importing JSON
+    "outDir": "dist",                           // Output directory for compiled files
+    "baseUrl": "./",                            // Base directory for non-relative module names
+    "paths": {
+      "@/*": ["src/*"]                          // Alias for src directory
+    }
+  }
+}
