@@ -1,6 +1,11 @@
 import app from '@/app.js';
 import config from '@/config/config.js';
+import { AppDataSource } from '@/config/data-source.js';
 
-app.listen(config.port, () => {
-  console.log(`🚀Server ready at http://localhost:${config.port}`);
-});
+AppDataSource.initialize()
+  .then(() => {
+    app.listen(config.port, () => {
+      console.log(`🚀Server running on port:${config.port}`);
+    });
+  })
+  .catch((error) => console.log(error));

@@ -18,8 +18,8 @@ export class User {
   role!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: Date;
+  createdAt?: Date;
 
   @CreateDateColumn({ type: 'timestamp', name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt!: Date;
+  updatedAt?: Date;
 }
