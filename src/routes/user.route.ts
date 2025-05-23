@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { getUserList } from '@/controllers/user.controller.js';
 
-const userRouter = Router();
+const userRoutes = Router();
 
-userRouter.get('/api/users', getUserList);
+userRoutes.get('/api/users', getUserList);
 
-export default userRouter;
+export default userRoutes;

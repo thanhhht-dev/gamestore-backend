@@ -7,7 +7,7 @@ const userRepo = AppDataSource.getRepository(User);
 export const getUserList = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await userRepo.find();
-    res.json(users);
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
