@@ -1,6 +1,7 @@
 import { AppDataSource } from '@/config/data-source.js';
-import { TOKEN_EXPIRES_TIME } from '@/constants/token.js';
+import { SALT_ROUNDS, TOKEN_EXPIRES_TIME } from '@/constants/token.js';
 import { User } from '@/models/user.model.js';
+import { HttpError } from '@utils/HttpError';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { NextFunction, Request, Response } from 'express';
@@ -31,22 +32,19 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
   try {
     const parsed = signinSchema.parse(req.body);
     if (!parsed) {
-      res.status(400).json({ message: 'Bad request' });
-      return;
+      throw new HttpError('Bad Request', 400);
     }
 
     const { email, password } = parsed;
 
     const user = await userRepo.findOneBy({ email });
     if (!user) {
-      res.status(401).json({ message: 'Invalid credentials' });
-      return;
+      throw new HttpError('Invalid credentials', 400);
     }
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
-      res.status(401).json({ message: 'Invalid credentials' });
-      return;
+      throw new HttpError('Invalid credentials', 400);
     }
 
     const payload = { id: user.id, email: user.email, name: user.name, role: user.role };
@@ -54,7 +52,6 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
     next(error);
   }
 };
@@ -63,19 +60,17 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
   try {
     const parsed = signupSchema.parse(req.body);
     if (!parsed) {
-      res.status(400).json({ message: 'Bad request' });
-      return;
+      throw new HttpError('Bad Request', 400);
     }
 
     const { firstName, lastName, phoneNumber, birthDate, email, password } = parsed;
 
     const existingUser = await userRepo.findOneBy({ email });
     if (existingUser) {
-      res.status(409).json({ message: 'User already exists' });
-      return;
+      throw new HttpError('User already exists', 409);
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
     const newUser = userRepo.create({
       name: `${firstName} ${lastName}`,
@@ -98,7 +93,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
     next(error);
   }
 };
