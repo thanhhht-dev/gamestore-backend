@@ -1,4 +1,4 @@
-import { AppDataSource } from '@/config/data-source.js';
+import { AppDataSource } from '@config/data-source.js';
 import { User } from '@/models/user.model.js';
 import { NextFunction, Request, Response } from 'express';
 

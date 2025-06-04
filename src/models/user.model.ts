@@ -28,4 +28,7 @@ export class User extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp', name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt?: Date;
+
+  @Column({ type: 'varchar', nullable: true })
+  refreshToken?: string | null;
 }
